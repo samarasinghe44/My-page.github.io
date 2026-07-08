@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Survey</title>
+</head>
+<body>
+
+<h2 id="welcome"></h2>
+
+<p>
+Please review the content below and answer the question.
+</p>
+
+<h3>Do you approve this proposal?</h3>
+
+<select id="answer">
+    <option value="Yes">Yes</option>
+    <option value="No">No</option>
+</select>
+
+<br><br>
+
+<button onclick="submitForm()">Submit</button>
+
+<p id="status"></p>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const token = params.get("token");
+
+document.getElementById("welcome").innerText =
+    "Please provide your response";
+
+function submitForm() {
+
+    fetch("https://script.google.com/macros/s/AKfycbzxAHCT_0Gsr1HiXanmchEsx_zgPu56D1Cf2Ma9PtHtsumqcpRIBf89CtflFhWy4sUJ/exec", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            token: token,
+            answer: document.getElementById("answer").value
+        })
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log(data);
+        alert(data);
+    })
+    .catch(error => {
+        console.error(error);
+        alert("ERROR: " + error);
+    });
+
+}
+</script>
+
+</body>
+</html>
